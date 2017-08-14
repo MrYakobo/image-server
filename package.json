@@ -1,0 +1,36 @@
+{
+  "name": "image-server",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "bin":{
+	"image-server":"app.js"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile:css": "node-sass --output-style expanded style.sass style.css",
+    "postinstall":"npm run compile:css"
+  },
+  "keywords": [],
+  "author": "Jakob Lindskog <jakob.lindskog@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bulma": "^0.5.1",
+    "express": "^4.15.4",
+    "font-awesome": "^4.7.0",
+    "ip": "^1.1.5",
+    "is-image": "^2.0.0",
+    "mkdirp": "^0.5.1",
+    "node-thumbnail": "^0.11.0",
+    "opn": "^5.1.0",
+    "rimraf": "^2.6.1",
+    "sharp": "^0.18.2",
+    "vue": "^2.4.2",
+    "walk": "^2.3.9"
+  },
+  "devDependencies": {
+    "node-sass": "^4.5.3"
+  },
+}
