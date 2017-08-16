@@ -1,19 +1,23 @@
 {
   "name": "imageinary",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Making displaying and browsing images a breeze",
   "main": "app.js",
-  "bin":{
-	 "image-server":"app.js"
+  "bin": {
+    "image-server": "app.js"
   },
   "directories": {
     "test": "test"
   },
   "scripts": {
     "compile:css": "node-sass --output-style expanded style.sass style.css",
-    "postinstall":"npm run compile:css"
+    "postinstall": "npm run compile:css"
   },
-  "keywords": ["image","server","image-server"],
+  "keywords": [
+    "image",
+    "server",
+    "image-server"
+  ],
   "author": "Jakob Lindskog <jakob.lindskog@gmail.com>",
   "license": "MIT",
   "dependencies": {
