@@ -1,5 +1,5 @@
 {
-  "name": "@mryakobo/image-server",
+  "name": "imageinary",
   "version": "0.0.1",
   "description": "Making displaying and browsing images a breeze",
   "main": "app.js",
@@ -13,7 +13,7 @@
     "compile:css": "node-sass --output-style expanded style.sass style.css",
     "postinstall":"npm run compile:css"
   },
-  "keywords": [],
+  "keywords": ['image','server','image-server'],
   "author": "Jakob Lindskog <jakob.lindskog@gmail.com>",
   "license": "MIT",
   "dependencies": {
