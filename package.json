@@ -4,10 +4,14 @@
   "description": "Making displaying and browsing images a breeze",
   "main": "app.js",
   "bin": {
-    "image-server": "app.js"
+    "imageinary": "app.js"
   },
   "directories": {
     "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mryakobo/imageinary.git"
   },
   "scripts": {
     "compile:css": "node-sass --output-style expanded style.sass style.css",

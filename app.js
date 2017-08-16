@@ -46,7 +46,7 @@ app.use('/', express.static('.'))
 app.use('/', express.static(__dirname));
 
 app.listen(8080, () => {
-    console.log('image-server listening on ' + ip.address() + ':8080!');
+    console.log('imageinary listening on ' + ip.address() + ':8080!');
     opn('http://localhost:8080')
 })
 

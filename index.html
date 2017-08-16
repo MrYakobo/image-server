@@ -9,7 +9,7 @@
     <script src="data.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>image-server</title>
+    <title>imageinary</title>
 </head>
 
 <body class="has-text-centered">
@@ -31,7 +31,7 @@
         <div class="hero is-primary is-bold">
             <div class="hero-body">
                 <h1 class="title is-1">{{folder}}</h1>
-                <h2 class="subtitle is-2">image-server</h2>
+		<!--<h2 class="subtitle is-2">imageinary</h2>-->
                 <hr>
                 <button class="button is-info is-outlined is-large" @click="download">Download all images</button>
                 <button @click="dltoggle = !dltoggle" :class="['button is-large',dltoggle ? 'is-success': 'is-warning']"><i class="fa fa-download"></i>&nbsp;{{dltoggle ? 'On':'Off'}}</button>
