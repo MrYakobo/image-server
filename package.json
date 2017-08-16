@@ -14,8 +14,7 @@
     "url": "https://github.com/mryakobo/imageinary.git"
   },
   "scripts": {
-    "compile:css": "node-sass --output-style expanded style.sass style.css",
-    "postinstall": "npm run compile:css"
+    "compile:css": "echo 'Compiling your own SASS from Bulma isnt quite supported yet. Sorry for that. Here is the command: ' && echo 'node-sass --output-style expanded style.sass style.css'"
   },
   "keywords": [
     "image",
@@ -38,7 +37,7 @@
     "vue": "^2.4.2",
     "walk": "^2.3.9"
   },
-  "devDependencies": {
+   "devDependencies": {
     "node-sass": "^4.5.3"
   }
 }
