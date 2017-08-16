@@ -2,9 +2,9 @@
   "name": "imageinary",
   "version": "0.0.3",
   "description": "Making displaying and browsing images a breeze",
-  "main": "app.js",
+  "main": "main.js",
   "bin": {
-    "imageinary": "app.js"
+    "imageinary": "cli.js"
   },
   "directories": {
     "test": "test"
@@ -14,6 +14,7 @@
     "url": "https://github.com/mryakobo/imageinary.git"
   },
   "scripts": {
+    "test": "cd test && node ../cli.js",
     "compile:css": "echo 'Compiling your own SASS from Bulma isnt quite supported yet. Sorry for that. Here is the command: ' && echo 'node-sass --output-style expanded style.sass style.css'"
   },
   "keywords": [
