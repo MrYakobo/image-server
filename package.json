@@ -1,6 +1,6 @@
 {
   "name": "imageinary",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Making displaying and browsing images a breeze",
   "main": "main.js",
   "bin": {
@@ -38,7 +38,7 @@
     "vue": "^2.4.2",
     "walk": "^2.3.9"
   },
-   "devDependencies": {
+  "devDependencies": {
     "node-sass": "^4.5.3"
   }
 }
