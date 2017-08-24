@@ -14,20 +14,29 @@ var thumbnails = require('./thumbnails') //script for generating thumbnails
 //opn
 var opn = require('opn')
 
+var keepThumbnails = process.argv[2] == '--keep-thumbnails'
+
 function middleware(files) {
-
     thumbnails(files) //generate thumbnails for input files
-
-    app.get('/data.js', (req, res) => {
-        res.send(`var files = ${JSON.stringify(files)}; var folder = ${JSON.stringify(path.basename(process.cwd()))}`)
+    
+    app.get('/data.json', (req, res) => {
+        var o = {files: files, folder: path.basename(process.cwd())}
+        res.send(JSON.stringify(o))
+        // res.send(`var files = ${JSON.stringify(files)}; var folder = ${JSON.stringify(path.basename(process.cwd()))}`)
     });
 
     app.get('/', (req, res) => {
-        res.send(fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8'))
+        res.send(fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8'))
     });
 
+    app.use('/node_modules', express.static(path.join(__dirname,'../node_modules')));
+    app.use('/src/assets', express.static(path.join(__dirname,'../src/assets')));
+    app.use('/dist', express.static(path.join(__dirname,'../dist')));
+
+    //"catch all"-route
     app.use('/', express.static('.'))
-    app.use('/', express.static(__dirname));
+    //this way, if an asset is present in both dirs, the server will prefer the one that came from this package (which is probably more important)
+    // app.use('/', express.static(__dirname));
 
     return app
 }
@@ -39,14 +48,14 @@ module.exports.cli = function (files) {
     var app = middleware(files)
 
     app.listen(8080, () => {
-        console.log('imageinary listening on ' + ip.address() + ':8080!');
+        //console.log('imageinary listening on ' + ip.address() + ':8080!');
         //open localhost in browser
         opn('http://localhost:8080')
     })
 
     //on server exit
     process.on('SIGINT', () => {
-        if (process.argv[2] == '--keep-thumbnails') {
+        if (keepThumbnails) {
             process.exit()
         }
         console.log('\nCleaning up thumbnails directory...')

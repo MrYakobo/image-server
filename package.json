@@ -1,44 +1,44 @@
 {
-  "name": "imageinary",
-  "version": "0.0.4",
-  "description": "Making displaying and browsing images a breeze",
-  "main": "main.js",
-  "bin": {
-    "imageinary": "cli.js"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mryakobo/imageinary.git"
-  },
-  "scripts": {
-    "test": "cd test && node ../cli.js",
-    "compile:css": "echo 'Compiling your own SASS from Bulma isnt quite supported yet. Sorry for that. Here is the command: ' && echo 'node-sass --output-style expanded style.sass style.css'"
-  },
-  "keywords": [
-    "image",
-    "server",
-    "image-server"
-  ],
+  "name": "imageinary2",
+  "description": "A Vue.js project",
+  "version": "1.0.0",
   "author": "Jakob Lindskog <jakob.lindskog@gmail.com>",
-  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "build:dev": "cross-env NODE_ENV=development webpack --progress --hide-modules",
+    "test": "cd test && node ../backend/cli.js",
+    "download": "node backend/imagepixel.js"
+  },
   "dependencies": {
-    "bulma": "^0.5.1",
+    "axios": "^0.16.2",
+    "cli-progress": "^1.5.0",
     "express": "^4.15.4",
     "font-awesome": "^4.7.0",
     "ip": "^1.1.5",
     "is-image": "^2.0.0",
+    "is-video": "^1.0.1",
     "mkdirp": "^0.5.1",
-    "node-thumbnail": "^0.11.0",
     "opn": "^5.1.0",
     "rimraf": "^2.6.1",
     "sharp": "^0.18.2",
-    "vue": "^2.4.2",
+    "video-thumb": "0.0.3",
+    "video-thumbnail": "^1.1.0",
+    "vue": "^2.3.3",
     "walk": "^2.3.9"
   },
   "devDependencies": {
-    "node-sass": "^4.5.3"
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-env": "^1.5.1",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.25.0",
+    "download-image": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "vue-loader": "^12.1.0",
+    "vue-template-compiler": "^2.3.3",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
   }
 }
