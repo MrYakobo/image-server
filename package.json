@@ -1,9 +1,12 @@
 {
-  "name": "imageinary2",
+  "name": "imageinary",
   "description": "A Vue.js project",
   "version": "1.0.0",
   "author": "Jakob Lindskog <jakob.lindskog@gmail.com>",
-  "private": true,
+  "private": false,
+  "bin": {
+    "imageinary": "./backend/cli.js"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
