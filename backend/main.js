@@ -1,10 +1,9 @@
 //web server
 var express = require('express');
-var app = express();
 var ip = require('ip')
+var yesno = require('yesno')
 
 //file system
-var fs = require('fs')
 var path = require('path')
 var rimraf = require('rimraf')
 
@@ -17,21 +16,25 @@ var opn = require('opn')
 var keepThumbnails = process.argv[2] == '--keep-thumbnails'
 
 function middleware(files) {
+    var app = express()
     thumbnails(files) //generate thumbnails for input files
-    
+
     app.get('/data.json', (req, res) => {
-        var o = {files: files, folder: path.basename(process.cwd())}
+        var o = {
+            files: files,
+            folder: path.basename(process.cwd())
+        }
         res.send(JSON.stringify(o))
         // res.send(`var files = ${JSON.stringify(files)}; var folder = ${JSON.stringify(path.basename(process.cwd()))}`)
     });
 
     app.get('/', (req, res) => {
-        res.send(fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8'))
+        res.sendFile(path.join(__dirname, '../index.html'))
     });
 
-    app.use('/node_modules', express.static(path.join(__dirname,'../node_modules')));
-    app.use('/src/assets', express.static(path.join(__dirname,'../src/assets')));
-    app.use('/dist', express.static(path.join(__dirname,'../dist')));
+    app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
+    app.use('/src/assets', express.static(path.join(__dirname, '../src/assets')));
+    app.use('/dist', express.static(path.join(__dirname, '../dist')));
 
     //"catch all"-route
     app.use('/', express.static('.'))
@@ -47,10 +50,11 @@ module.exports.middleware = middleware
 module.exports.cli = function (files) {
     var app = middleware(files)
 
-    app.listen(8080, () => {
-        //console.log('imageinary listening on ' + ip.address() + ':8080!');
+    var port = process.env.PORT || 8080
+    app.listen(port, () => {
+        console.log('imageinary listening on ' + ip.address() + ':'+port+'!');
         //open localhost in browser
-        opn('http://localhost:8080')
+        opn('http://localhost:' + port)
     })
 
     //on server exit
@@ -58,10 +62,16 @@ module.exports.cli = function (files) {
         if (keepThumbnails) {
             process.exit()
         }
-        console.log('\nCleaning up thumbnails directory...')
-        console.log('(run with --keep-thumbnails to avoid this behaviour)')
-        rimraf('.thumbnails', function () {
-            process.exit();
+        yesno.ask('\nDo you want me to clean up the thumbnails directory? [Y/n]', true, (yes) => {
+            if (yes) {
+                console.log('Ok! rm -rf .thumbnails')
+                rimraf('.thumbnails', function () {
+                    process.exit();
+                })
+            } else {
+                console.log(`K, I'll leave it there. (run imageinary with --keep-thumbnails to avoid the choice next time)`)
+                process.exit();
+            }
         })
     });
 }

@@ -8,7 +8,7 @@
     "imageinary": "./backend/cli.js"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "dev": "node backend/cacheTestFolder.js && cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "build:dev": "cross-env NODE_ENV=development webpack --progress --hide-modules",
     "test": "cd test && node ../backend/cli.js",
@@ -19,6 +19,7 @@
     "cli-progress": "^1.5.0",
     "express": "^4.15.4",
     "font-awesome": "^4.7.0",
+    "fs-extra": "^4.0.2",
     "ip": "^1.1.5",
     "is-image": "^2.0.0",
     "is-video": "^1.0.1",
@@ -29,7 +30,8 @@
     "video-thumb": "0.0.3",
     "video-thumbnail": "^1.1.0",
     "vue": "^2.3.3",
-    "walk": "^2.3.9"
+    "walk": "^2.3.9",
+    "yesno": "0.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

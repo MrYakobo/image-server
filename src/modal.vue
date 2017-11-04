@@ -62,8 +62,13 @@
             }
         },
         computed: {
+            //helper property to check if files length > 0
+            isLoaded(){
+                return this.files.length > 0
+            },
             isImage() {
-                return this.files[this.i].type === 'image'
+                if(this.isLoaded)
+                    return this.files[this.i].type === 'image'
             },
             currImg() {
                 if (this.files.length === 0) {
