@@ -28,7 +28,7 @@
     "rimraf": "^2.6.1",
     "sharp": "^0.18.2",
     "video-thumb": "0.0.3",
-    "video-thumbnail": "^1.1.0",
+    "video-thumbnail": "^1.2.0",
     "vue": "^2.3.3",
     "walk": "^2.3.9",
     "yesno": "0.0.1"
