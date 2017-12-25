@@ -10,7 +10,11 @@ var hash = require('checksum')
 
 var opn = require('opn')
 
-var _progress = require('cli-progress');
+var ora = require('ora')
+
+function percent(i, length){
+    return ((i+1)/length*100).toFixed(2)
+}
 
 async function hashCheck(hashfile, string) {
     var old
@@ -80,8 +84,7 @@ const ROOT = process.cwd()
 
 module.exports.folder = folderThumbnail
 module.exports.files = async function (files) {
-    var bar1 = new _progress.Bar({ format: 'Now generating thumbnails... [{bar}] {percentage}%', stopOnComplete: true }, _progress.Presets.shades_grey);
-    bar1.start(files.length, 0);
+    var spinner = ora('Generating thumbnails...').start()
 
     var failed = []
 
@@ -94,19 +97,20 @@ module.exports.files = async function (files) {
             //make sure path to thumbnail exists
             mkdirp(path.dirname(dest))
             if (isVideo(files[i])) {
+                spinner.text = `Generating video thumbnail... ${files[i]} (${percent(i,files.length)}% total)`
                 await videothumbnail.video(files[i], dest, { width: 290 })
             } else {
                 try {
+                    spinner.text = `Generating thumbnails... ${files[i]} )${percent(i,files.length)}% total)`
                     await sharp(files[i]).resize(290, 217).toFile(dest)
                 }
                 catch(er){
+                    spinner.info(files[i] + ` is in an invalid format and won't be displayed.`)
                     failed.push(files[i])
                 }
             }
         }
-        bar1.increment()
     }
-    bar1.stop()
+    spinner.succeed('Generated thumbnails for all images.')
     return failed
-    console.log('Done!')
 }

@@ -8,7 +8,7 @@
             </template>
             <template v-else>
                 <img v-show="!imageloaded" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOUuvj1PwAFzgLhbof62gAAAABJRU5ErkJggg==" key="loading">
-                <video class="videofix" v-show="imageloaded" :src="src" @loadstart="loaded" @error="tryagain" autoplay loop></video>
+                <video ref="video" class="videofix" v-show="imageloaded" :src="src" @loadstart="loaded" @error="tryagain" autoplay loop></video>
             </template>
         </figure>
     </div>
@@ -49,6 +49,7 @@
         },
         mounted() {
             this.src = this.thumb
+            this.refs.video.volume = 1
         }
     }
 </script>

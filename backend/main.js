@@ -59,21 +59,23 @@ function middleware(failed) {
 module.exports.middleware = middleware
 
 module.exports.cli = async function() {
+    var app = middleware([])
+    var port = process.env.PORT || 8080
+    app.listen(port, () => {
+        console.log(`imageinary listening on ${ip.address()}:${port}!`)
+        //open localhost in browser
+        // opn('http://localhost:' + port)
+    })
+
     var [allFiles, folders] = await recursiveWalk('.')
-    var failedThumbnails = await thumbnails(allFiles) //generate thumbnails for ALL files in subdirectories
-    var app = middleware(failedThumbnails)
+    thumbnails(allFiles).then(()=>{
+
+    }) //generate thumbnails for ALL files in subdirectories
 
     for(var i = 0; i < folders.length; i++){
         var files = await fs.readdir(folders[i])
         await folderThumb(folders[i], files)
     }
-
-    var port = process.env.PORT || 8080
-    app.listen(port, () => {
-        console.log('imageinary listening on ' + ip.address() + ':'+port+'!');
-        //open localhost in browser
-        // opn('http://localhost:' + port)
-    })
 
     var isExiting = false
     //on server exit
@@ -82,6 +84,7 @@ module.exports.cli = async function() {
             process.exit()
         }
         if(!isExiting){
+            /*
             yesno.ask('\nDo you want me to clean up the thumbnails directory? [Y/n]', true, (yes) => {
                 if (yes) {
                     console.log('Ok! rm -rf .thumbnails')
@@ -93,6 +96,8 @@ module.exports.cli = async function() {
                     process.exit();
                 }
             })
+            */
+            process.exit(0)
             isExiting = true
         }
     });
