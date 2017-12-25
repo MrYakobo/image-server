@@ -1,7 +1,7 @@
 {
   "name": "imageinary",
   "description": "A Vue.js project",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Jakob Lindskog <jakob.lindskog@gmail.com>",
   "private": false,
   "bin": {
