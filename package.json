@@ -12,10 +12,13 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "build:dev": "cross-env NODE_ENV=development webpack --progress --hide-modules",
     "test": "cd test && node ../backend/cli.js",
-    "download": "node backend/imagepixel.js"
+    "download": "node backend/imagepixel.js",
+    "build_test": "npm run build:dev && npm t",
+    "test:folderThumbnail": "cd test && node ../backend/test.js"
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "checksum": "^0.1.1",
     "cli-progress": "^1.5.0",
     "express": "^4.15.4",
     "font-awesome": "^4.7.0",
@@ -27,9 +30,11 @@
     "opn": "^5.1.0",
     "rimraf": "^2.6.1",
     "sharp": "^0.18.2",
+    "tmp-promise": "^1.0.4",
     "video-thumb": "0.0.3",
     "video-thumbnail": "^1.2.0",
     "vue": "^2.3.3",
+    "vue2-touch-events": "^0.2.3",
     "walk": "^2.3.9",
     "yesno": "0.0.1"
   },

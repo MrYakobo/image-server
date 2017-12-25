@@ -27,6 +27,10 @@
         computed: {
             thumb() {
                 return `.thumbnails/${this.source}`
+                // var arr = this.source.split('/')
+                // var last = arr[arr.length-1]
+                // var first = this.source.split(last)[0]
+                // return `${first}.thumbnails/${last}`
             }
         },
         methods: {
@@ -38,9 +42,9 @@
             },
             tryagain() {
                 //if image hasn't loaded yet due to computer not having generated the images fast enough:
-                // setTimeout(() => {
-                //     this.src = this.thumb + "?" + Date.now()
-                // }, 100)
+                setTimeout(() => {
+                    this.src = this.thumb + "?" + Date.now()
+                }, 2000)
             }
         },
         mounted() {

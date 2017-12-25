@@ -1,28 +1,26 @@
 <template>
     <div class="modal" :style="show ? 'display:block' : ''">
         <div class="modal-background" @click="hide"></div>
-        <img v-show="isImage" class="fullscreenimg2" :src="currImg">
-        <video v-show="!isImage" controls autoplay class="fullscreenvideo" :src="currImg" ref="video"></video>
+        <img v-touch:swipe="swipeHandler" v-show="isImage" class="fullscreenimg2" :src="currImg">
+        <video v-touch:swipe="swipeHandler" v-show="!isImage" controls autoplay class="fullscreenvideo" :src="currImg" ref="video"></video>
         <div class="tag is-success is-large">
             <h4 class="title is-4 has-text-white">{{i+1}}/{{files.length}}</h4>
         </div>
         <!--Misc floating controls-->
         <button class="modal-close is-large" aria-label="close" @click="hide"></button>
-        <button class="modal-button-right button is-primary is-large" @click="increment"><i class="fa fa-arrow-right"></i></button>
-        <button class="modal-button-left button is-primary is-large" @click="decrement"><i class="fa fa-arrow-left"></i></button>
+        <button class="modal-button-right button is-white is-large" @click="increment"><i class="fa fa-arrow-right"></i></button>
+        <button class="modal-button-left button is-white is-large" @click="decrement"><i class="fa fa-arrow-left"></i></button>
         <!--TOOLBAR-->
         <div class="fix-footer">
             <a class="button is-large is-outlined is-white" download :href="currImg"><i class="fa fa-download"></i></a>
-            <button class="button is-large is-outlined is-danger" @click="trash"><i class="fa fa-trash-o"></i></button>
+            <!--<button class="button is-large is-outlined is-danger" @click="trash"><i class="fa fa-trash-o"></i></button>-->
             <!-- <star-panel :rating="2" @rating="val => { updateDB(file, val) }"></star-panel> -->
         </div>
     </div>
 </template>
 
 <script>
-    import {
-        bus
-    } from './bus.js'
+    import { bus } from './bus.js'
 
     export default {
         name: 'modal',
@@ -59,6 +57,12 @@
             },
             hide() {
                 this.$emit('hide')
+            },
+            swipeHandler(direction){
+                if(direction === 'right')
+                    this.decrement()
+                if(direction === 'left')
+                    this.increment()
             }
         },
         computed: {

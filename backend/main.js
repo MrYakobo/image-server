@@ -6,26 +6,39 @@ var yesno = require('yesno')
 //file system
 var path = require('path')
 var rimraf = require('rimraf')
-
 //image
-var thumbnails = require('./thumbnails') //script for generating thumbnails
-
+var thumbnails = require('./thumbnails').files //script for generating thumbnails
+var folderThumb = require('./thumbnails').folder //script for generating thumbnails
 //opn
 var opn = require('opn')
-
 var keepThumbnails = process.argv[2] == '--keep-thumbnails'
 
-function middleware(files) {
-    var app = express()
-    thumbnails(files) //generate thumbnails for input files
+var ROOT = process.cwd()
 
-    app.get('/data.json', (req, res) => {
-        var o = {
-            files: files,
-            folder: path.basename(process.cwd())
+var walker = require('./walker').single
+var recursiveWalk = require('./walker').recursive
+
+var fs = require('fs-extra')
+
+//path is the requested path (starts at / and goes to /folder/subfolder)
+function middleware(failed) {
+    var app = express()
+
+    //GET data.json?path=Jakob/EOS%20M
+    //returns JSON with files
+    app.get('/data.json', async (req, res) => {
+        try {
+            var p = path.resolve(path.join(ROOT, req.query.path))
+            await fs.access(p)
+
+            var [files, folders] = await walker(p)
+            var o = { err: false, files: files.filter(f=> failed.indexOf(f.url)<0), folders: folders } //keep files that didn't fail
+            res.send(JSON.stringify(o))
         }
-        res.send(JSON.stringify(o))
-        // res.send(`var files = ${JSON.stringify(files)}; var folder = ${JSON.stringify(path.basename(process.cwd()))}`)
+        catch(er){
+            console.error(er)
+            res.send(JSON.stringify({err: er}))
+        }
     });
 
     app.get('/', (req, res) => {
@@ -38,8 +51,6 @@ function middleware(files) {
 
     //"catch all"-route
     app.use('/', express.static('.'))
-    //this way, if an asset is present in both dirs, the server will prefer the one that came from this package (which is probably more important)
-    // app.use('/', express.static(__dirname));
 
     return app
 }
@@ -47,31 +58,42 @@ function middleware(files) {
 //Exports:
 module.exports.middleware = middleware
 
-module.exports.cli = function (files) {
-    var app = middleware(files)
+module.exports.cli = async function() {
+    var [allFiles, folders] = await recursiveWalk('.')
+    var failedThumbnails = await thumbnails(allFiles) //generate thumbnails for ALL files in subdirectories
+    var app = middleware(failedThumbnails)
+
+    for(var i = 0; i < folders.length; i++){
+        var files = await fs.readdir(folders[i])
+        await folderThumb(folders[i], files)
+    }
 
     var port = process.env.PORT || 8080
     app.listen(port, () => {
         console.log('imageinary listening on ' + ip.address() + ':'+port+'!');
         //open localhost in browser
-        opn('http://localhost:' + port)
+        // opn('http://localhost:' + port)
     })
 
+    var isExiting = false
     //on server exit
     process.on('SIGINT', () => {
         if (keepThumbnails) {
             process.exit()
         }
-        yesno.ask('\nDo you want me to clean up the thumbnails directory? [Y/n]', true, (yes) => {
-            if (yes) {
-                console.log('Ok! rm -rf .thumbnails')
-                rimraf('.thumbnails', function () {
+        if(!isExiting){
+            yesno.ask('\nDo you want me to clean up the thumbnails directory? [Y/n]', true, (yes) => {
+                if (yes) {
+                    console.log('Ok! rm -rf .thumbnails')
+                    rimraf('.thumbnails', function () {
+                        process.exit();
+                    })
+                } else {
+                    console.log(`K, I'll leave it there. (run imageinary with --keep-thumbnails to avoid the choice next time)`)
                     process.exit();
-                })
-            } else {
-                console.log(`K, I'll leave it there. (run imageinary with --keep-thumbnails to avoid the choice next time)`)
-                process.exit();
-            }
-        })
+                }
+            })
+            isExiting = true
+        }
     });
 }

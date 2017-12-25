@@ -11,3 +11,4 @@ test
 *.ntvs*
 *.njsproj
 *.sln
+.vscode
